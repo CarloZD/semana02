@@ -1,0 +1,23 @@
+<h1>Lista de Estudiantes</h1>
+
+<table border="1">
+  <tr>
+    <th>Nombre</th>
+    <th>Nota</th>
+  </tr>
+
+  {{#each students}}
+  <tr>
+    <td>{{name}}</td>
+    
+    {{#if highlight}}
+      <td style="color: green; font-weight: bold;">
+        {{grade}}
+      </td>
+    {{else}}
+      <td>{{grade}}</td>
+    {{/if}}
+
+  </tr>
+  {{/each}}
+</table>
