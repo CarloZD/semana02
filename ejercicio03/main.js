@@ -1,5 +1,5 @@
 const http = require("http");
-const repo = require("./studentsRepository");
+const repo = require("./repository/studentsRepository");
 
 const PORT = 4000;
 
@@ -29,27 +29,27 @@ const server = http.createServer((req, res) => {
   }
 
   // -------- CREATE --------
-  else if (url === "/students" && method === "POST") {
-    let body = "";
+    else if (url === "/students" && method === "POST") {
+      let body = "";
 
-    req.on("data", chunk => (body += chunk));
+      req.on("data", chunk => (body += chunk));
 
-    req.on("end", () => {
-      const data = JSON.parse(body);
+      req.on("end", () => {
+        const data = JSON.parse(body);
 
-      // VALIDACIÓN
-      if (!data.name || !data.email || !data.phone) {
-        res.statusCode = 400;
-        return res.end(JSON.stringify({
-          error: "Nombre, email y teléfono son obligatorios"
-        }));
-      }
+        // VALIDACIÓN — campos obligatorios
+        if (!data.name || !data.email || !data.phone || !data.course) {
+          res.statusCode = 400;
+          return res.end(JSON.stringify({
+            error: "Nombre, email, teléfono y carrera son obligatorios"
+          }));
+        }
 
-      const newStudent = repo.create(data);
-      res.statusCode = 201;
-      res.end(JSON.stringify(newStudent));
-    });
-  }
+        const newStudent = repo.create(data);
+        res.statusCode = 201;
+        res.end(JSON.stringify(newStudent));
+      });
+    }
 
   // -------- UPDATE --------
   else if (url.startsWith("/students/") && method === "PUT") {
